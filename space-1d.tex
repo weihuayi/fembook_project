@@ -146,18 +146,83 @@ n_{dof} = {k+1}
 \]
 
 构造指标矩阵：
-
 \[
 I = \begin{pmatrix}
 k  & 0 \\ k-1 & 1 \\ \vdots & \vdots \\ 0 & k
 \end{pmatrix}
 \]
-
-则 $k+1$ 个 $k$ 次基函数可写成如下形式
-
+则第 $i$ 个 $k$ 次基函数可写成如下形式
 \[
-\phi_i = B_{I_{i,0}, 0}B_{I_{i, 1},1}, \quad i = 0, 1, \cdots, n_{dof}
+\phi_i = B_{m,0}B_{n,1}, 
 \]
+其中 $ m = I_{i, 0}, n = I_{i, 1} $, 并且 $ m + n = k$.
+
+\begin{align*}
+    \nabla \prod_{j = 0}^{m - 1} (k\lambda_0 - j)
+    = & k\sum_{j=0}^{m - 1}\prod_{0\le l \le m-1, l\not= j}(k\lambda_0 -
+    l)\nabla \lambda_0,\\
+    \nabla \prod_{j = 0}^{n - 1} (k\lambda_1 - j)
+    = & k\sum_{j=0}^{n - 1}\prod_{0\le l \le m-1, l\not= j}(k\lambda_1 -
+    l)\nabla \lambda_0,\\
+\end{align*}
+\begin{align*}
+\bfD^0 = 
+\begin{pmatrix}
+k & k\lambda_0 & \cdots & k\lambda_0 \\
+k\lambda_0 - 1 & k & \cdots & k\lambda_0 - 1 \\
+\vdots & \vdots & \ddots & \vdots \\
+k\lambda_0 - (k-1) & k\lambda_0 - (k-1) & \cdots & k 
+\end{pmatrix},\\ 
+\bfD^1 = 
+\begin{pmatrix}
+k & k\lambda_1 & \cdots & k\lambda_1 \\
+k\lambda_1 - 1 & k & \cdots & k\lambda_1 - 1 \\
+\vdots & \vdots & \ddots & \vdots \\
+k\lambda_1 - (k-1) & k\lambda_1 - (k-1) & \cdots & k 
+\end{pmatrix},\\ 
+\end{align*}
+把 $\bfD^0$ 和 $\bfD^1$ 的每一列沿行的方向做累乘运算，然后取它们的下三角矩阵，
+最后把下三角矩阵的每一行再求和，即可得到矩阵 $\bfB$ 的每一列各个元素的求导后系
+数. 可得到矩阵 $\bfD$，其元素定义为 
+$$
+\bfD_{i,j} = \sum_{m=0}^j\prod_{k=0}^j D^i_{k, m},\quad 0 \le i \le 1,
+, 0 \le j \le k-1.
+$$
+最后，可以用如下的方式来计算 $\bfB$ 的梯度：
+\begin{equation*}
+\begin{aligned}
+\nabla \bfB = & \mathrm{diag}(\bfP)
+\begin{pmatrix}
+0 & 0 \\
+\bfD_{0,0} \nabla \lambda_0 & 
+\bfD_{1,0} \nabla \lambda_1 \\
+\vdots & \vdots\\
+\bfD_{0, k-1} \nabla \lambda_0 &
+\bfD_{1, k-1} \nabla \lambda_1 & 
+\end{pmatrix}\\
+= & \mathrm{diag}(\bfP)
+\begin{pmatrix}
+\mathbf 0\\
+\bfD
+\end{pmatrix}
+\begin{pmatrix}
+\nabla \lambda_0 \\
+ & \nabla \lambda_1 \\
+\end{pmatrix}\\
+= & \bfF 
+\begin{pmatrix}
+\nabla \lambda_0 &  \\
+ & \nabla \lambda_1 \\
+\end{pmatrix},
+\end{aligned}
+\end{equation*}
+其中
+\begin{equation}\label{eq:F}
+    \bfF = \mathrm{diag}(\bfP)
+\begin{pmatrix} 
+    \mathbf 0\\ \bfD
+\end{pmatrix}.
+\end{equation}
 
 \section{插值}
 \subsection{线性插值}
@@ -345,13 +410,12 @@ einsum 函数是 NumPy 的中最有用的函数之一。由于其强大的表现
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[scale=1]{./figures/twomat.png}
+    \includegraphics[scale=2]{./figures/twomat.png}
     \caption{两矩阵相乘示意图。}
     \label{fig:twomat}
 \end{figure}
 
 \subsection{插值、积分与投影的 Python 实现}
-
 基于 Python 的 Numpy 实现相应的 L2 投影.
 
 \section{问题}
