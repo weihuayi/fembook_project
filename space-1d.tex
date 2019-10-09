@@ -1,0 +1,362 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass{article}
+\input{en_preamble.tex}
+\input{xecjk_preamble.tex}
+\begin{document}
+\title{一维分片多项式空间}
+\author{魏华祎}
+\date{\chntoday}
+\maketitle
+
+\section{从向量空间到函数空间}
+\section{分片多项式空间}
+
+函数空间有下面两个要素决定
+\begin{itemize}
+    \item 函数空间的基函数, 注意基函数的选取不是唯一的.
+    \item 函数空间的自由度
+\end{itemize}
+
+\subsection{分片线性多项式空间}
+给定区间 $I = [x_0, x_1]$, 其上的线性多项式空间定义如下：
+\begin{equation}
+    P_1(I) = \{v: v(x) = c_0 + c_1 x, x\in I, c_0, c_1 \in \mathbb R\},
+\end{equation}
+
+\begin{framed}
+\begin{remark}
+~\\
+\begin{itemize}
+    \item 上面表达式选取的基函数为单项式 $(1, x)$.
+    \item 函数空间的自由度个数就是基函数的个数.
+    \item 函数空间自由度的值 $(c_0, c_1)$, 就是相对于基函数的坐标.
+    \item 给定基函数, 则区间 $I$ 上所有的线性函数和 $\mathbb R^2$ 空间中的点建
+        立了一一对应关系.
+\end{itemize}
+\end{remark}
+\end{framed}
+
+另一种基函数的选择是重心坐标函数(节点基函数):
+
+\begin{equation}
+    \lambda_0(x) = \frac{x_1 - x}{x_1 - x_0}, \lambda_1(x) = \frac{x - x_0}{x_1
+    - x_0}.
+\end{equation}
+
+\begin{framed}
+\begin{remark}
+~\\
+\begin{itemize}
+    \item 性质
+    \item 代数意义
+    \item 几何意义
+    \item 选择重心坐标做为基函数的好处是什么?
+\end{itemize}
+\end{remark}
+\end{framed}
+
+对于 $v \in P_1(I)$, 有
+$$
+v(x) = v(x_0)\lambda_0 + v(x_1) \lambda_1
+$$
+
+\subsection{Sylvester 插值}
+Sylvester 插值多项式\cite{sheng2008} 是构造高次基函数的基础，它的定义如下
+$$
+R_i(k,\lambda)=
+\begin{cases}
+\frac{1}{i!}\prod_{l=0}^{i-1} (k\lambda-l),~& 1\leq i\leq k\\
+1,& i=0\\
+\end{cases}
+$$
+其中 $\lambda \in [0,1]$，$k$ 表示区间 $[0,1]$ 的等分数。易知 
+
+\begin{itemize}
+    \item $R_i(k, \lambda)$ 是关于 $\lambda$ 的 $i$ 次多项式。
+    \item 当 $\lambda= \frac{l}{k}, l=0, 1, \cdots, i-1$ 时, $R_i(k, \lambda) =0$。
+    \item 当 $\lambda=\frac{i}{k}$ 时 $R_i(k, \lambda) = 1$。
+\end{itemize}
+
+\subsection{$k$ 次多项式空间 $P_k(I)$}
+
+给定区间 $I = [x_0, x_1]$, 其上的线性多项式空间定义如下：
+\begin{equation}
+    P_k(I) = \{v: v(x) = c_0 + c_1 x + \cdots + c_k x^k, x\in I, c_0, c_1,
+    \cdots c_k \in \mathbb R\},
+\end{equation}
+
+区间 $[x_0, x_1]$ 上的个 $ k\geq 1 $ 次基函数共有 
+
+\[
+n_{dof} = k+1,
+\]
+
+其计算公式如下:
+
+\[
+\phi_{m,n} = \frac{1}{m!n!}\prod_{l_0 = 0}^{m - 1}
+(k\lambda_0 - l_0) \prod_{l_1 = 0}^{n-1}(k\lambda_1 -
+l_1).
+\]
+
+其中 $ m\geq 0$, $ n\geq 0 $, 且 $ m+n=k $, 这里规定:
+
+\[
+ \prod_{l_i=0}^{-1}(k\lambda_i - l_i) := 1,\quad i=0, 1
+\]
+
+$k$ 次基函数的面向数组的计算
+构造向量： 
+
+\[
+P = ( \frac{1}{0!},  \frac{1}{1!}, \frac{1}{2!}, \cdots, \frac{1}{k!})
+\]
+
+构造矩阵： 
+
+\[
+A :=
+\begin{pmatrix}
+1  &  1  \\
+k\lambda_0 & k\lambda_1\\
+k\lambda_0 - 1 & k\lambda_1 - 1\\
+\vdots & \vdots \\
+k\lambda_0 - (k - 1) & k\lambda_1 - (k - 1)
+\end{pmatrix}
+\]
+
+对 $A$ 的每一列做累乘运算, 并左乘由 $P$ 形成的对角矩阵, 得矩阵:
+
+\[
+B = \mathrm{diag}(P)
+\begin{pmatrix}
+1 & 1\\
+\lambda_0 & \lambda_1\\
+\prod_{l=0}^{1}(k\lambda_0 - l) & \prod_{l=0}^{1}(k\lambda_1 - l)\\
+\vdots & \vdots \\
+\prod_{l=0}^{k-1}(k\lambda_0 - l) & \prod_{l=0}^{k-1}(k\lambda_1 - l)
+\end{pmatrix}
+\]
+
+易知, 只需从 $B$ 的每一列中各选择一项相乘(要求二项次数之和为 $k$,
+其中取法共有
+
+\[
+n_{dof} = {k+1}
+\]
+
+构造指标矩阵：
+
+\[
+I = \begin{pmatrix}
+k  & 0 \\ k-1 & 1 \\ \vdots & \vdots \\ 0 & k
+\end{pmatrix}
+\]
+
+则 $k+1$ 个 $k$ 次基函数可写成如下形式
+
+\[
+\phi_i = B_{I_{i,0}, 0}B_{I_{i, 1},1}, \quad i = 0, 1, \cdots, n_{dof}
+\]
+
+\section{插值}
+\subsection{线性插值}
+给定区间 $I = [x_0, x_1]$, 和一个定义在 $I$ 上的连续函数 $f$，其插值定义如下： 
+
+$$
+\pi_1f(x) = f(x_0)\lambda_0 + f(x_1)\lambda_1
+$$
+
+\begin{framed}
+\begin{remark}
+~\\
+\begin{itemize}
+    \item 如果 $f \in P_1(I)$ 则 $ f = \pi_1 f$. 
+    \item 一般情况下， $f \not= \pi_1 f$. 
+    \item 计算插值只需要计算函数在网格点处的值, 很容易实现.
+    \item 两者之间会差多远？ $\| f - \pi_1 f \|_0$.
+\end{itemize}
+\end{remark}
+\end{framed}
+
+\begin{framed}
+\begin{remark}
+用范数衡量函数和函数插值之间的误差
+\begin{itemize}
+    \item 无穷范数 $$ \|v\|_\infty = \max_{x\in I} |v(x)|$$
+    \item $L^2$范数 $$ \|v\|_2 = \left(\int_I v^2 \rmd x\right)^{\frac{1}{2}}$$
+\end{itemize}
+\end{remark}
+\end{framed}
+
+\begin{framed}
+\begin{remark}
+误差分析中的常用的两个不等式
+\begin{itemize}
+    \item 三角不等式 $$ \|v + w\|_2 \leq \|v\|_2 + \|w\|_2 $$
+\item Cauchy-Schwarz 不等式 $$\int_I vw \rmd x \leq \|v\|_2  \|w\|_2 $$
+\end{itemize}
+\end{remark}
+\end{framed}
+
+\begin{framed}
+    \begin{proposition}
+        插值误差满足下面估计
+        \begin{align*}
+            \|f- \pi_1 f\|_2 &\leq C h^2 \|f''\|_2 \\
+            \|(f - \pi_1 f)\|_2 &\leq C h \|f''\|_2
+        \end{align*}
+    \end{proposition}
+    \begin{proof}
+        利用微积分基本定理, 把函数和函数的导数联系起来. 
+
+        利用罗尔中值定理和微积基本定理把, 函数的1阶导数和2阶导数联系起来.
+    \end{proof}
+\end{framed}
+
+\subsection{连续线性分片插值}
+
+给定区间 $I=[a, b]$, 分成 $n$ 段, 共有 
+
+$$
+a = x_0 < x_1 < \cdots < x_n=b
+$$
+
+可以定义连续函数 $f$ 在区间 $I$ 上的连续分片线性插值函数为
+
+$$
+\pi_1 f = \sum_{i=0}^n f(x_i) \phi_i(x)
+$$
+
+\begin{framed}
+    \begin{proposition}
+        连续分片线性插值误差满足下面估计
+        \begin{align*}
+            \|f- \pi_1 f\|_{2,I} &\leq C \sum_{i=0}^{n-1} h_i^4 \|f''\|_{2,
+            I_i}^2 \\
+            \|(f - \pi_1 f)\|_{2, I} &\leq C \sum_{i=0}^{n-1}h_i^2 \|f''\|_{2,
+            I_i}^2
+        \end{align*}
+    \end{proposition}
+\end{framed}
+
+\section{$L^2$ 投影}
+
+给定 $f\in L^2(I)$, 定义 $L^2$ 投影 $P_h f \in V_h$, 
+
+\begin{align*}
+    (P_h f, v)_I &= (f, v)_I, \forall v\in V_h\\
+    (f - P_h f, v)_I &= 0, \forall v\in V_h
+\end{align*}
+
+\begin{framed}
+\begin{remark}
+ ~   
+\begin{itemize}
+    \item $f - P_h f \bot V_h$.
+    \item $P_h f$ 和$\pi_1 f$ 是不同的.
+    \item 推导 $P_h$ 对应的线性系统.
+    \item 计算 $P_h f$ 需要求解线性代数系统, 计算量比插值要大.
+\end{itemize}
+\end{remark}
+\end{framed}
+
+\begin{framed}
+    \begin{theorem}
+        $$
+        \|f-P_hf\|_{2, I} \leq \|f - v\|_{2, I}, \forall v \in V_h.
+        $$
+    \end{theorem}
+    \begin{theorem}
+        $$
+        \|f- P_h f\|_{2,I}^2 \leq C \sum_{i=0}^{n-1} h_i^4 \|f''\|_{2, I_i}
+        \leq C h \|f''\|_{2, I}^2
+        $$
+    \end{theorem}
+    \begin{proof}
+        利用投影的正交性质, 最优最近性及插值的误差估计.
+    \end{proof}
+\end{framed}
+
+\section{数值积分}
+
+所有的数值积分公式本质上都是给一组积分点 $(x_0, x_1, \cdots, x_{m-1})$ 及相应的
+权重 $(w_0, w_1, \cdots, w_{m-1})$. 
+$$
+\int_I f(x) \rmd x \approx |I|(w_0 f(x_0) + w_1 f(x_1) + \cdots + w_{m-1}
+f(x_{m-1}) = |I|\sum_{i=0}^{m-1} w_if(x_i)
+$$
+
+\begin{framed}
+    \begin{remark}
+        ~
+        \begin{itemize}
+            \item $\sum_{i=0}^{m-1}w_i = 1$.
+            \item $|I|$ 是区间的长度.
+            \item 数值积分的理论基础是积分中值定理.
+            \item 上面数值积分公式形式同样适用于高维区域上的积分.
+        \end{itemize}
+    \end{remark}
+\end{framed}
+
+\begin{framed}
+    设 $m$ 是区间  $I = [x_0, x_1]$ 的中点, 下面给出几种常见的积分公式。
+    \begin{description}
+        \item[中点积分公式:] 
+            $$ |I|f(m)$$
+        \item[梯形积分公式:] 
+            $$ |I|\left[\frac{1}{2}f(x_0) +\frac{1}{2}f(x_1) \right] $$
+        \item[辛普森积分公式:]
+            $$|I|\left[\frac{1}{6}f(x_0) + \frac{4}{6}f(m) + \frac{1}{6}f(x_1)\right]$$
+    \end{description}
+\end{framed}
+
+\section{实现}
+
+\subsection{Numpy 多维数组}
+
+利用 Python 数据分析的课件讲解。
+
+\subsection{爱因斯坦求和}
+
+einsum 函数是 NumPy 的中最有用的函数之一。由于其强大的表现力和智能循环，它在速
+度和内存效率方面通常可以超越我们常见的 array 函数。但缺点是，可能需要一段时间才
+能理解符号，有时需要尝试才能将其正确的应用于棘手的问题。
+
+\begin{listing}[H]
+    \caption{利用 einsum 求和进行向量和矩阵相乘}
+    \begin{pythoncode}
+        import numpy as np
+        A = np.arange(3)
+        B = np.arange(12).reshape(3, 4)
+        C = np.einsum('i, ij->i', A, B)
+    \end{pythoncode}
+\end{listing}
+
+\begin{listing}[H]
+    \caption{利用 einsum 求和进行矩阵相乘}
+    \begin{pythoncode}
+        import numpy as np
+        A = np.array([[1, 1, 1], [2, 2, 2], [5, 5, 5]])
+        B = np.array([[0, 1, 0], [1, 1, 0], [1, 1, 1]])
+        C = np.einsum('ij, jk->i', A, B)
+    \end{pythoncode}
+\end{listing}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[scale=1]{./figures/twomat.png}
+    \caption{两矩阵相乘示意图。}
+    \label{fig:twomat}
+\end{figure}
+
+\subsection{插值、积分与投影的 Python 实现}
+
+基于 Python 的 Numpy 实现相应的 L2 投影.
+
+\section{问题}
+
+\cite{fem_2010}
+\bibliographystyle{abbrv}
+\bibliography{ref}
+\end{document}

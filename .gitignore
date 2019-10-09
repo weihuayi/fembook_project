@@ -1,0 +1,17 @@
+*.png
+*.aux
+*.snm
+*~*
+*.log
+*.nav
+*.snm
+*.out
+*.toc
+*.pdf
+
+*.nav
+*.snm
+.DS_Store
+*.bbl
+*.blg
+_minted-*

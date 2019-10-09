@@ -1,0 +1,461 @@
+
+%%%%%%%%------------------------------------------------------------------------
+%%%% 日常所用宏包
+
+%% 控制页边距
+% 如果是beamer文档类, 则不用geometry
+\makeatletter
+\@ifclassloaded{beamer}{}{\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}}
+\makeatother
+
+\usepackage{amsthm}
+%% 控制项目列表
+\usepackage{enumerate}
+
+%% Todo list
+\usepackage{enumitem}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+
+
+\usepackage{framed}
+
+%% 多栏显示
+\usepackage{multicol}
+
+%% 算法环境
+\usepackage{algorithm}  
+\usepackage{algorithmic} 
+\usepackage{float} 
+
+%% 网址引用
+\usepackage{url}
+
+%% 控制矩阵行距
+\renewcommand\arraystretch{1.4}
+
+%% 粗体
+\usepackage{bm}
+
+
+%% hyperref宏包，生成可定位点击的超链接，并且会生成pdf书签
+\makeatletter
+\@ifclassloaded{beamer}{
+\usepackage{hyperref}
+\usepackage{ragged2e} % 对齐
+}{
+\usepackage[%
+    pdfstartview=FitH,%
+    CJKbookmarks=true,%
+    bookmarks=true,%
+    bookmarksnumbered=true,%
+    bookmarksopen=true,%
+    colorlinks=true,%
+    citecolor=blue,%
+    linkcolor=blue,%
+    anchorcolor=green,%
+    urlcolor=blue%
+]{hyperref}
+}
+\makeatother
+
+
+
+\makeatletter % 如果是 beamer 不需要下面两个包
+\@ifclassloaded{beamer}{
+\mode<presentation>
+{
+} 
+}{
+%% 控制标题
+\usepackage{titlesec}
+%% 控制目录
+\usepackage{titletoc}
+}
+\makeatother
+
+%% 控制表格样式
+\usepackage{booktabs}
+
+%% 控制字体大小
+\usepackage{type1cm}
+
+%% 首行缩进，用\noindent取消某段缩进
+\usepackage{indentfirst}
+
+%% 支持彩色文本、底色、文本框等
+\usepackage{color,xcolor}
+
+%% AMS LaTeX宏包: http://zzg34b.w3.c361.com/package/maths.htm#amssymb
+\usepackage{amsmath,amssymb}
+%% 多个图形并排
+\usepackage{subfloat}
+%%%% 基本插图方法
+%% 图形宏包
+\usepackage{graphicx}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\structure{#1}}
+\newcommand{\brown}[1]{\textcolor{brown}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+
+
+%%%% 基本插图方法结束
+
+%%%% pgf/tikz绘图宏包设置
+\usepackage{pgf,tikz}
+\usetikzlibrary{shapes,automata,snakes,backgrounds,arrows}
+\usetikzlibrary{mindmap}
+%% 可以直接在latex文档中使用graphviz/dot语言，
+%% 也可以用dot2tex工具将dot文件转换成tex文件再include进来
+%% \usepackage[shell,pgf,outputdir={docgraphs/}]{dot2texi}
+%%%% pgf/tikz设置结束
+
+
+\makeatletter % 如果是 beamer 不需要下面两个包
+\@ifclassloaded{beamer}{
+
+}{
+%%%% fancyhdr设置页眉页脚
+%% 页眉页脚宏包
+\usepackage{fancyhdr}
+%% 页眉页脚风格
+\pagestyle{plain}
+}
+
+%% 有时会出现\headheight too small的warning
+\setlength{\headheight}{15pt}
+
+%% 清空当前页眉页脚的默认设置
+%\fancyhf{}
+%%%% fancyhdr设置结束
+
+
+\makeatletter % 对 beamer 要重新设置
+\@ifclassloaded{beamer}{
+
+}{
+%%%% 设置listings宏包用来粘贴源代码
+%% 方便粘贴源代码，部分代码高亮功能
+\usepackage{listings}
+
+%% 设置listings宏包的一些全局样式
+%% 参考http://hi.baidu.com/shawpinlee/blog/item/9ec431cbae28e41cbe09e6e4.html
+\lstset{
+showstringspaces=false,              %% 设定是否显示代码之间的空格符号
+numbers=left,                        %% 在左边显示行号
+numberstyle=\tiny,                   %% 设定行号字体的大小
+basicstyle=\scriptsize,                    %% 设定字体大小\tiny, \small, \Large等等
+keywordstyle=\color{blue!70}, commentstyle=\color{red!50!green!50!blue!50},
+                                     %% 关键字高亮
+frame=shadowbox,                     %% 给代码加框
+rulesepcolor=\color{red!20!green!20!blue!20},
+escapechar=`,                        %% 中文逃逸字符，用于中英混排
+xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+breaklines,                          %% 这条命令可以让LaTeX自动将长的代码行换行排版
+extendedchars=false                  %% 这一条命令可以解决代码跨页时，章节标题，页眉等汉字不显示的问题
+}
+
+\usepackage{minted}
+\renewcommand{\listingscaption}{Python code} \newminted{python}{
+    escapeinside=||,
+    mathescape=true,
+    numbersep=5pt,
+    linenos=true,
+    autogobble,
+    framesep=3mm} 
+}
+\makeatother
+%%%% listings宏包设置结束
+
+
+%%%% 附录设置
+\makeatletter % 对 beamer 要重新设置
+\@ifclassloaded{beamer}{
+
+}{
+\usepackage[title,titletoc,header]{appendix}
+}
+\makeatother
+%%%% 附录设置结束
+
+
+
+
+
+%% 设定行距
+\linespread{1}
+
+%% 粗体的小写字母代表向量或向量函数
+\newcommand{\bfa}{{\boldsymbol a}}
+\newcommand{\bfb}{{\boldsymbol b}}
+\newcommand{\bfc}{{\boldsymbol c}}
+\newcommand{\bfd}{{\boldsymbol d}}
+\newcommand{\bfe}{{\boldsymbol e}}
+\newcommand{\bff}{{\boldsymbol f}}
+\newcommand{\bfg}{{\boldsymbol g}}
+\newcommand{\bfh}{{\boldsymbol h}}
+\newcommand{\bfi}{{\boldsymbol i}}
+\newcommand{\bfj}{{\boldsymbol j}}
+\newcommand{\bfk}{{\boldsymbol k}}
+\newcommand{\bfl}{{\boldsymbol l}}
+\newcommand{\bfm}{{\boldsymbol m}}
+\newcommand{\bfn}{{\boldsymbol n}}
+\newcommand{\bfo}{{\boldsymbol o}}
+\newcommand{\bfp}{{\boldsymbol p}}
+\newcommand{\bfq}{{\boldsymbol q}}
+\newcommand{\bfr}{{\boldsymbol r}}
+\newcommand{\bfs}{{\boldsymbol s}}
+\newcommand{\bft}{{\boldsymbol t}}
+\newcommand{\bfu}{{\boldsymbol u}}
+\newcommand{\bfv}{{\boldsymbol v}}
+\newcommand{\bfw}{{\boldsymbol w}}
+\newcommand{\bfx}{{\boldsymbol x}}
+\newcommand{\bfy}{{\boldsymbol y}}
+\newcommand{\bfz}{{\boldsymbol z}}
+
+\newcommand{\mca}{{\mathcal a}}
+\newcommand{\mcb}{{\mathcal b}}
+\newcommand{\mcc}{{\mathcal c}}
+\newcommand{\mcd}{{\mathcal d}}
+\newcommand{\mce}{{\mathcal e}}
+\newcommand{\mcf}{{\mathcal f}}
+\newcommand{\mcg}{{\mathcal g}}
+\newcommand{\mch}{{\mathcal h}}
+\newcommand{\mci}{{\mathcal i}}
+\newcommand{\mcj}{{\mathcal j}}
+\newcommand{\mck}{{\mathcal k}}
+\newcommand{\mcl}{{\mathcal l}}
+\newcommand{\mcm}{{\mathcal m}}
+\newcommand{\mcn}{{\mathcal n}}
+\newcommand{\mco}{{\mathcal o}}
+\newcommand{\mcp}{{\mathcal p}}
+\newcommand{\mcq}{{\mathcal q}}
+\newcommand{\mcr}{{\mathcal r}}
+\newcommand{\mcs}{{\mathcal s}}
+\newcommand{\mct}{{\mathcal t}}
+\newcommand{\mcu}{{\mathcal u}}
+\newcommand{\mcv}{{\mathcal v}}
+\newcommand{\mcw}{{\mathcal w}}
+\newcommand{\mcx}{{\mathcal x}}
+\newcommand{\mcy}{{\mathcal y}}
+\newcommand{\mcz}{{\mathcal z}}
+
+\newcommand{\mra}{{\mathrm a}}
+\newcommand{\mrb}{{\mathrm b}}
+\newcommand{\mrc}{{\mathrm c}}
+\newcommand{\mrd}{{\mathrm d}}
+\newcommand{\mre}{{\mathrm e}}
+\newcommand{\mrf}{{\mathrm f}}
+\newcommand{\mrg}{{\mathrm g}}
+\newcommand{\mrh}{{\mathrm h}}
+\newcommand{\mri}{{\mathrm i}}
+\newcommand{\mrj}{{\mathrm j}}
+\newcommand{\mrk}{{\mathrm k}}
+\newcommand{\mrl}{{\mathrm l}}
+\newcommand{\mrm}{{\mathrm m}}
+\newcommand{\mrn}{{\mathrm n}}
+\newcommand{\mro}{{\mathrm o}}
+\newcommand{\mrp}{{\mathrm p}}
+\newcommand{\mrq}{{\mathrm q}}
+\newcommand{\mrr}{{\mathrm r}}
+\newcommand{\mrs}{{\mathrm s}}
+\newcommand{\mrt}{{\mathrm t}}
+\newcommand{\mru}{{\mathrm u}}
+\newcommand{\mrv}{{\mathrm v}}
+\newcommand{\mrw}{{\mathrm w}}
+\newcommand{\mrx}{{\mathrm x}}
+\newcommand{\mry}{{\mathrm y}}
+\newcommand{\mrz}{{\mathrm z}}
+
+%% 粗体的大写字母一般表示矩阵和张量
+\newcommand{\bfA}{{\boldsymbol A}}
+\newcommand{\bfB}{{\boldsymbol B}}
+\newcommand{\bfC}{{\boldsymbol C}}
+\newcommand{\bfD}{{\boldsymbol D}}
+\newcommand{\bfE}{{\boldsymbol E}}
+\newcommand{\bfF}{{\boldsymbol F}}
+\newcommand{\bfG}{{\boldsymbol G}}
+\newcommand{\bfH}{{\boldsymbol H}}
+\newcommand{\bfI}{{\boldsymbol I}}
+\newcommand{\bfJ}{{\boldsymbol J}}
+\newcommand{\bfK}{{\boldsymbol K}}
+\newcommand{\bfL}{{\boldsymbol L}}
+\newcommand{\bfM}{{\boldsymbol M}}
+\newcommand{\bfN}{{\boldsymbol N}}
+\newcommand{\bfO}{{\boldsymbol O}}
+\newcommand{\bfP}{{\boldsymbol P}}
+\newcommand{\bfQ}{{\boldsymbol Q}}
+\newcommand{\bfR}{{\boldsymbol R}}
+\newcommand{\bfS}{{\boldsymbol S}}
+\newcommand{\bfT}{{\boldsymbol T}}
+\newcommand{\bfU}{{\boldsymbol U}}
+\newcommand{\bfV}{{\boldsymbol V}}
+\newcommand{\bfW}{{\boldsymbol W}}
+\newcommand{\bfX}{{\boldsymbol X}}
+\newcommand{\bfY}{{\boldsymbol Y}}
+\newcommand{\bfZ}{{\boldsymbol Z}}
+
+%% 花体大写字母
+\newcommand{\mcA}{{\mathcal A}}
+\newcommand{\mcB}{{\mathcal B}}
+\newcommand{\mcC}{{\mathcal C}}
+\newcommand{\mcD}{{\mathcal D}}
+\newcommand{\mcE}{{\mathcal E}}
+\newcommand{\mcF}{{\mathcal F}}
+\newcommand{\mcG}{{\mathcal G}}
+\newcommand{\mcH}{{\mathcal H}}
+\newcommand{\mcI}{{\mathcal I}}
+\newcommand{\mcJ}{{\mathcal J}}
+\newcommand{\mcK}{{\mathcal K}}
+\newcommand{\mcL}{{\mathcal L}}
+\newcommand{\mcM}{{\mathcal M}}
+\newcommand{\mcN}{{\mathcal N}}
+\newcommand{\mcO}{{\mathcal O}}
+\newcommand{\mcP}{{\mathcal P}}
+\newcommand{\mcQ}{{\mathcal Q}}
+\newcommand{\mcR}{{\mathcal R}}
+\newcommand{\mcS}{{\mathcal S}}
+\newcommand{\mcT}{{\mathcal T}}
+\newcommand{\mcU}{{\mathcal U}}
+\newcommand{\mcV}{{\mathcal V}}
+\newcommand{\mcW}{{\mathcal W}}
+\newcommand{\mcX}{{\mathcal X}}
+\newcommand{\mcY}{{\mathcal Y}}
+\newcommand{\mcZ}{{\mathcal Z}}
+
+%% 空心大写字母
+\newcommand{\mbA}{{\mathbb A}}
+\newcommand{\mbB}{{\mathbb B}}
+\newcommand{\mbC}{{\mathbb C}}
+\newcommand{\mbD}{{\mathbb D}}
+\newcommand{\mbE}{{\mathbb E}}
+\newcommand{\mbF}{{\mathbb F}}
+\newcommand{\mbG}{{\mathbb G}}
+\newcommand{\mbH}{{\mathbb H}}
+\newcommand{\mbI}{{\mathbb I}}
+\newcommand{\mbJ}{{\mathbb J}}
+\newcommand{\mbK}{{\mathbb K}}
+\newcommand{\mbL}{{\mathbb L}}
+\newcommand{\mbM}{{\mathbb M}}
+\newcommand{\mbN}{{\mathbb N}}
+\newcommand{\mbO}{{\mathbb O}}
+\newcommand{\mbP}{{\mathbb P}}
+\newcommand{\mbQ}{{\mathbb Q}}
+\newcommand{\mbR}{{\mathbb R}}
+\newcommand{\mbS}{{\mathbb S}}
+\newcommand{\mbT}{{\mathbb T}}
+\newcommand{\mbU}{{\mathbb U}}
+\newcommand{\mbV}{{\mathbb V}}
+\newcommand{\mbW}{{\mathbb W}}
+\newcommand{\mbX}{{\mathbb X}}
+\newcommand{\mbY}{{\mathbb Y}}
+\newcommand{\mbZ}{{\mathbb Z}}
+
+\newcommand{\mrA}{{\mathrm A}}
+\newcommand{\mrB}{{\mathrm B}}
+\newcommand{\mrC}{{\mathrm C}}
+\newcommand{\mrD}{{\mathrm D}}
+\newcommand{\mrE}{{\mathrm E}}
+\newcommand{\mrF}{{\mathrm F}}
+\newcommand{\mrG}{{\mathrm G}}
+\newcommand{\mrH}{{\mathrm H}}
+\newcommand{\mrI}{{\mathrm I}}
+\newcommand{\mrJ}{{\mathrm J}}
+\newcommand{\mrK}{{\mathrm K}}
+\newcommand{\mrL}{{\mathrm L}}
+\newcommand{\mrM}{{\mathrm M}}
+\newcommand{\mrN}{{\mathrm N}}
+\newcommand{\mrO}{{\mathrm O}}
+\newcommand{\mrP}{{\mathrm P}}
+\newcommand{\mrQ}{{\mathrm Q}}
+\newcommand{\mrR}{{\mathrm R}}
+\newcommand{\mrS}{{\mathrm S}}
+\newcommand{\mrT}{{\mathrm T}}
+\newcommand{\mrU}{{\mathrm U}}
+\newcommand{\mrV}{{\mathrm V}}
+\newcommand{\mrW}{{\mathrm W}}
+\newcommand{\mrX}{{\mathrm X}}
+\newcommand{\mrY}{{\mathrm Y}}
+\newcommand{\mrZ}{{\mathrm Z}}
+
+
+\newcommand{\balpha}{{\bm \alpha}}
+\newcommand{\bbeta}{{\bm \beta}}
+\newcommand{\bgamma}{{\bm \gamma}}
+\newcommand{\bdelta}{{\bm \delta}}
+\newcommand{\bepsilon}{{\bm \epsilon}}
+\newcommand{\bvarepsilon}{{\bm \varepsilon}}
+\newcommand{\bzeta}{{\bm \zeta}}
+\newcommand{\bfeta}{{\bm \eta}}
+\newcommand{\btheta}{{\bm \theta}}
+\newcommand{\biota}{{\bm \iota}}
+\newcommand{\bkappa}{{\bm \kappa}}
+\newcommand{\blamda}{{\bm \lamda}}
+\newcommand{\bmu}{{\bm \mu}}
+\newcommand{\bnu}{{\bm \nu}}
+\newcommand{\bxi}{{\bm \xi}}
+\newcommand{\bomicron}{{\bm \omicron}}
+\newcommand{\bpi}{{\bm \pi}}
+\newcommand{\brho}{{\bm \rho}}
+\newcommand{\bsigma}{{\bm \sigma}}
+\newcommand{\btau}{{\bm \tau}}
+\newcommand{\bupsilon}{{\bm \upsilon}}
+\newcommand{\bphi}{{\bm \phi}}
+\newcommand{\bchi}{{\bm \chi}}
+\newcommand{\bpsi}{{\bm \psi}}
+
+\newcommand{\rmd}{\,\mathrm d}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cP}{\mathcal P}
+\newcommand{\cM}{\mathcal M}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\cN}{\mathcal N}
+\newcommand{\cV}{\mathcal V}
+\newcommand{\cW}{\mathcal W}
+\newcommand{\bbS}{\mathbb S}
+\newcommand{\bbR}{\mathbb R}
+
+%% 算子
+\newcommand{\od}{\text{div}}
+\newcommand{\os}{\text{span}}
+\newcommand{\ot}{\text{tr}}
+\newcommand{\norm}[1]{||#1||}
+\newcommand{\dof}{\text{dof}}
+
+%%%% 个性设置结束
+%%%%%%%%------------------------------------------------------------------------
+
+
+%%%%%%%%------------------------------------------------------------------------
+%%%% bibtex设置
+
+%% 设定参考文献显示风格
+% 下面是几种常见的样式
+% * plain: 按字母的顺序排列，比较次序为作者、年度和标题
+% * unsrt: 样式同plain，只是按照引用的先后排序
+% * alpha: 用作者名首字母+年份后两位作标号，以字母顺序排序
+% * abbrv: 类似plain，将月份全拼改为缩写，更显紧凑
+% * apalike: 美国心理学学会期刊样式, 引用样式 [Tailper and Zang, 2006]
+
+%\makeatletter
+%\@ifclassloaded{beamer}{
+%\bibliographystyle{apalike}
+%}{
+%\bibliographystyle{abbrv}
+%}
+%\makeatother
+
+
+%%%% bibtex设置结束
+%%%%%%%%------------------------------------------------------------------------
