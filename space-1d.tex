@@ -392,6 +392,19 @@ einsum 函数是 NumPy 的中最有用的函数之一。由于其强大的表现
     \caption{利用 einsum 求和进行向量和矩阵相乘}
     \begin{pythoncode}
         import numpy as np
+        a = np.array([1, 2, 3])
+        b = np.array([4, 5, 6])
+        np.einsum('i', a) # 返回 a 本身
+        np.einsum('i->', a) # 对 a 求和
+        np.einsum('i, i->i', a, b) # a 与 b 对应元素相乘
+    \end{pythoncode}
+\end{listing}
+
+
+\begin{listing}[H]
+    \caption{利用 einsum 求和进行向量和矩阵相乘}
+    \begin{pythoncode}
+        import numpy as np
         A = np.arange(3)
         B = np.arange(12).reshape(3, 4)
         C = np.einsum('i, ij->i', A, B)
