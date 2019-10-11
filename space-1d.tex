@@ -297,9 +297,9 @@ $$
     \begin{proposition}
         连续分片线性插值误差满足下面估计
         \begin{align*}
-            \|f- \pi_1 f\|_{2,I} &\leq C \sum_{i=0}^{n-1} h_i^4 \|f''\|_{2,
+            \|f- \pi_1 f\|_{2,I}^2 &\leq C \sum_{i=0}^{n-1} h_i^4 \|f''\|_{2,
             I_i}^2 \\
-            \|(f - \pi_1 f)\|_{2, I} &\leq C \sum_{i=0}^{n-1}h_i^2 \|f''\|_{2,
+            \|(f - \pi_1 f)\|_{2, I}^2 &\leq C \sum_{i=0}^{n-1}h_i^2 \|f''\|_{2,
             I_i}^2
         \end{align*}
     \end{proposition}
@@ -417,7 +417,7 @@ einsum 函数是 NumPy 的中最有用的函数之一。由于其强大的表现
         import numpy as np
         A = np.array([[1, 1, 1], [2, 2, 2], [5, 5, 5]])
         B = np.array([[0, 1, 0], [1, 1, 0], [1, 1, 1]])
-        C = np.einsum('ij, jk->i', A, B)
+        C = np.einsum('ij, jk->ik', A, B)
     \end{pythoncode}
 \end{listing}
 
@@ -427,6 +427,29 @@ einsum 函数是 NumPy 的中最有用的函数之一。由于其强大的表现
     \caption{两矩阵相乘示意图。}
     \label{fig:twomat}
 \end{figure}
+
+\begin{listing}[H]
+    \caption{一维向量运算}
+    \begin{pythoncode}
+        import numpy as np
+        A = np.arange(10)
+        B = np.arange(5, 15)
+        np.einsum('i->', A) # 求和
+        np.einsum('i, i->i', A, B) # 对应元素相乘 
+        np.einsum('i, i->', A, B) # 内积 np.inner(A, B) 或 np.dot(A, B)
+        np.einsum('i, j->ij, A, B) # 外积 np.outer(A, B)
+    \end{pythoncode}
+\end{listing}
+
+\begin{listing}[H]
+    \caption{二维向量运算}
+    \begin{pythoncode}
+        import numpy as np
+        np.einsum('ii', C) # 求迹 np.trace(C)
+        np.einsum('ij, ji->ij', C, D) #  C*D.T 
+        np.einsum('ij, kl->ijkl', C, D) # C[:, :, None, None]*D 
+    \end{pythoncode}
+\end{listing}
 
 \subsection{插值、积分与投影的 Python 实现}
 基于 Python 的 Numpy 实现相应的 L2 投影.
