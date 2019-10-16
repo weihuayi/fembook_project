@@ -1,0 +1,51 @@
+% !Mode:: "TeX:UTF-8"
+\documentclass{article}
+\input{en_preamble.tex}
+\input{xecjk_preamble.tex}
+\begin{document}
+\title{一维有限元}
+\author{李奥}
+\date{\chntoday}
+\maketitle
+
+\section{有限元}
+\begin{itemize}
+    \item 为什么要用有限元方法?
+\end{itemize}
+因为对于一般的右端，很难甚至不能找到对应的解析解。有时对于一个简单的偏微分方程，解析解的求解都非常困难。那么我们就会引入数值方法(有限元)来求解偏微分方程。
+
+\section{两点边值问题}
+我们以两点边值问题为例，求 $u$ ,使得
+
+\begin{equation}
+	\begin{aligned}
+	-u'' = f, x \in I = [0, L] \\
+		u(0) = u(L) = 0 \\
+	\end{aligned}
+\end{equation}
+
+\section{等价变分问题}
+引入两个空间
+
+\begin{itemize}
+    \item 试探函数空间
+    \item 检验函数空间
+\end{itemize}
+
+变分的过程中需要引入散度定理。
+
+\section{离散变分问题}
+
+等价变分问题仍然是一个无限的问题，为了可算，我们要把无限的问题有限化，这样就引入了模型离散的变分形式。
+
+\section{边界处理}
+\section{误差分析}
+数值解与真解之间有一个什么关系？怎样才能说明有限元求解是正确的。
+
+
+\section{问题}
+
+\cite{fem_2010}
+\bibliographystyle{abbrv}
+\bibliography{ref}
+\end{document}
