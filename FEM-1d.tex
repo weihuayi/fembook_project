@@ -18,26 +18,57 @@
 我们以两点边值问题为例，求 $u$ ,使得
 
 \begin{equation}
-	\begin{aligned}
-	-u'' = f, x \in I = [0, L] \\
-		u(0) = u(L) = 0 \\
-	\end{aligned}
+	\begin{cases}
+		-u'' & = f, x \in \Omega = [0, L], \\
+		u & = g_D,  x \,\, on \,\, \Gamma.\\
+	\end{cases}
 \end{equation}
 
 \section{等价变分问题}
-引入两个空间
+
+引入一类 Sobolev 空间：
+
+\begin{equation*}
+	H^1(\Omega) = \{u\in L^2(\Omega)|\nabla u \in (L^2(\Omega)^2)\}
+\end{equation*}
+两个基本要素
 
 \begin{itemize}
-    \item 试探函数空间
-    \item 检验函数空间
+	\item 试探函数空间 $u \in H^1_{g_D}(\Omega) = \{u|u \in H^1(\Omega) \text{且} u|_{\Gamma} = g_D\}$
+    \item 检验函数空间 $v \in H^1_0(\Omega) = \{v|v \in H^1(\Omega) \text{且} u|_{\Gamma} = 0\}$
 \end{itemize}
 
-变分的过程中需要引入散度定理。
+对任意的 $v \in H^1_0(\Omega)$，同乘方程 (1) 的两端，积分得
+
+\begin{equation}
+	-\int_{\Omega} u'' v \mathrm{d}x = \int_{\Omega} fv \mathrm{d}x
+\end{equation}
+
+利用散度定理，可得
+
+\begin{equation}
+	\int_{\Omega} u' v' \mathrm{d}x = \int_{\Omega} fv \mathrm{d}x + \int_{\Gamma v g_D\cdot n}\mathrm{d}\Gamma
+\end{equation}
+
+即原问题转化为：求解 $u \in H^1_0(\Omega)$，满足
+
+\begin{equation}
+	\int_{\Omega} u' v'\mathrm{d}x = \int_{\Omega} fv \mathrm{d}x
+\end{equation}
+
+
 
 \section{离散变分问题}
 
 等价变分问题仍然是一个无限的问题，为了可算，我们要把无限的问题有限化，这样就引入了模型离散的变分形式。
 
+对空间离散可得
+
+
+	\begin{equation*}
+		u_h \in H^1_{g_D}(\Omega) = \{u|u \in H^1(\Omega) \text{且} u|_{\Gamma} = g_D\}
+		v_h \in H^1_0(\Omega) = \{v|v \in H^1(\Omega) \text{且} u|_{\Gamma} = 0\}$
+	\end{equation*}
 \section{边界处理}
 \section{误差分析}
 数值解与真解之间有一个什么关系？怎样才能说明有限元求解是正确的。
