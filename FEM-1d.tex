@@ -62,14 +62,71 @@
 
 等价变分问题仍然是一个无限的问题，为了可算，我们要把无限的问题有限化，这样就引入了模型离散的变分形式。
 
-对空间离散可得
-
+线性有限元空间 $S_h \subset U$，定义如下 
 
 	\begin{equation*}
-		u_h \in H^1_{g_D}(\Omega) = \{u|u \in H^1(\Omega) \text{且} u|_{\Gamma} = g_D\}
-		v_h \in H^1_0(\Omega) = \{v|v \in H^1(\Omega) \text{且} u|_{\Gamma} = 0\}$
+		S_h = \{u_h \in C(\Omega) |u_h|_K \in P^1(K), \, \forall \, K \in \mathcal T_h\}
 	\end{equation*}
+	\begin{equation*}
+		S_{h,0} = \{v \in S_h:\,\, v|_{\Gamma} = 0\}
+	\end{equation*}
+	其中，$\mathcal T_h$ 是网格剖分的集合。假设区间剖分 n 段。
+
+那么离散形式为: 求解 $u_h \in S_h$, 使得
+
+\begin{equation}
+	\int_{\Omega} u'_h v' \mathrm dx = \int_{\Omega} f v' \mathrm dx
+\end{equation}
+
+则写成矩阵形式为
+
+\begin{equation}
+	\begin{pmatrix}
+		(\phi'_1, \phi'_1) & (\phi'_1, \phi'_2) & \cdots & (\phi'_1, \phi'_{n+1}) \\
+		(\phi'_2, \phi'_1) & (\phi'_2, \phi'_2) & \cdots & (\phi'_2, \phi'_{n+1}) \\
+		\vdots & \vdots & \cdots & \vdots \\
+	    (\phi'_{n+1}, \phi'_1) & (\phi'_{n+1}, \phi'_2) & \cdots & (\phi'_{n+1}, \phi'_{n+1}) \\
+	\end{pmatrix}
+	\begin{pmatrix}
+		u_1 \\
+		u_2 \\
+		\vdots \\
+		v_{n+1}
+	\end{pmatrix} 
+	= \begin{pmatrix}
+		(f_1, \phi_1) \\
+		(f_2, \phi_2) \\
+		\vdots \\
+		(f_{n+1}, \phi_{n+1}) \\
+	\end{pmatrix}
+\end{equation}
+
 \section{边界处理}
+
+Dirichlet 边界处理
+
+$$
+\mathbf u = \mathbf u_{interior} + \mathbf u_{boundary}
+$$
+
+其中
+
+$$
+\mathbf u_{interior}[i] = 
+\begin{cases}
+\mathbf u_i, & \mathbf x_i \text{ 是一个内部点}\\
+0, & \mathbf x_i \text{ 是一个边界点}
+\end{cases}
+$$
+
+$$
+\mathbf u_{boundary}[i] = 
+\begin{cases}
+u(x_i), & \mathbf x_i \text{ 是一个边界点}\\
+0, & \mathbf x_i \text{ 是一个内部点}
+\end{cases}
+$$
+
 \section{误差分析}
 数值解与真解之间有一个什么关系？怎样才能说明有限元求解是正确的。
 
